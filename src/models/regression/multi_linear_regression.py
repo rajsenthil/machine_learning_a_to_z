@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
@@ -21,7 +22,7 @@ print("Dataset Path: ", dataset_path)
 # Step - 2: Read the datasets
 
 dataset = pd.read_csv(dataset_path).values
-print(dataset)
+# print(dataset)
 
 # Thoughts:
 # Datasets has column of wide variety of ranges, needs to be scaled
@@ -33,7 +34,7 @@ print(dataset)
 X = dataset[:, :-1]
 y = dataset[:, -1]
 
-print(X)
+# print(X)
 
 # Step - 4: Convert the State column with text value to numeric by mapping them to unique numeric key
 col_trans = ColumnTransformer(
@@ -61,12 +62,13 @@ print(X_train)
 # Note: The Column transformer encoded the State column and inserted at the first 3 cols.
 # So R&D Spend col is positioned at the index 3, Administration at 4 and Marketting Spend at 5
 
-scaler = StandardScaler()
-X_train[:, 3:] = scaler.fit_transform(X_train[:, 3:])
-print(X_train)
-print(X_test)
-X_test[:, 3:] = scaler.transform(X_test[:, 3:])
-print(X_test)
+# NOT REQUIRED
+# scaler = StandardScaler()
+# X_train[:, 3:] = scaler.fit_transform(X_train[:, 3:])
+# print(X_train)
+# print(X_test)
+# X_test[:, 3:] = scaler.transform(X_test[:, 3:])
+# print(X_test)
 
 # Step - 8
 # Training the model
@@ -78,3 +80,16 @@ linear_regressor.fit(X=X_train, y=y_train)
 y_pred = linear_regressor.predict(X=X_test)
 print('y_pred: ', y_pred)
 print('y_test: ', y_test)
+
+# Step - 10: Visualizing the training set results
+np.set_printoptions(precision=2)
+result = np.concatenate((y_pred.reshape(len(y_pred), 1),
+                         np.array(y_test).reshape(len(y_test), 1)), axis=1)
+# plt.title("Expeceted vs Actual")
+# plt.xlabel("Expected")
+# plt.ylabel("Actual")
+# plt.scatter(X_test[3], y_test, c="green")
+# plt.scatter(X_test[3], y_pred, c="purple")
+# plt.show()
+
+print(result)
